@@ -4,11 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.util.Enumeration;
 import java.util.Vector;
-
 import android.app.Activity;
 import android.content.Context;
 import android.net.wifi.WifiInfo;
@@ -21,7 +17,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class AndroidDebuggingToolActivity extends Activity {
-	/** Called when the activity is first created. */
 
 	private Button btnStart;
 	private Button btnStop;
@@ -62,7 +57,6 @@ public class AndroidDebuggingToolActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				execCmd("-1");
 				btnStart.setClickable(true);
 				btnStop.setClickable(false);
@@ -79,6 +73,7 @@ public class AndroidDebuggingToolActivity extends Activity {
 	 *         好东西 http://su1216.iteye.com/blog/1668734
 	 */
 
+	@SuppressWarnings("rawtypes")
 	private Vector execCmd(String port) {
 		Vector localVector = new Vector();
 		try {
@@ -87,9 +82,9 @@ public class AndroidDebuggingToolActivity extends Activity {
 			DataOutputStream localDataOutputStream = new DataOutputStream(
 					localOutputStream);
 			InputStream localInputStream = localProcess.getInputStream();
+			@SuppressWarnings("unused")
 			DataInputStream localDataInputStream = new DataInputStream(
 					localInputStream);
-			// localVector.add(localDataInputStream.readLine());
 			localDataOutputStream.writeBytes(new String(
 					"setprop service.adb.tcp.port " + port + "\n"));
 
@@ -99,16 +94,6 @@ public class AndroidDebuggingToolActivity extends Activity {
 
 			localDataOutputStream.writeBytes(new String("exit\n"));
 			localDataOutputStream.flush();
-			// localVector.add(localDataInputStream.readLine());
-
-			// localDataOutputStream.flush();
-			// localVector.add(localDataInputStream.readLine());
-
-			// localDataOutputStream.flush();
-			// localVector.add(localDataInputStream.readLine());
-
-			// localDataOutputStream.flush();
-			// localVector.add(localDataInputStream.readLine());
 			localProcess.waitFor();
 		} catch (Exception localException) {
 			localException.printStackTrace();
@@ -123,7 +108,6 @@ public class AndroidDebuggingToolActivity extends Activity {
 	}
 
 	private String intToIp(int i) {
-
 		return (i & 0xFF) + "." + ((i >> 8) & 0xFF) + "." + ((i >> 16) & 0xFF)
 				+ "." + (i >> 24 & 0xFF);
 	}
